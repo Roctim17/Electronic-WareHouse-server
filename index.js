@@ -40,6 +40,7 @@ async function run() {
         // update 
         app.put('/product/:id', async (req, res) => {
             const id = req.params.id;
+            console.log(id)
             const updateQuantity = req.body;
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
@@ -50,6 +51,24 @@ async function run() {
                 },
             };
             const result = await productCollection.updateOne(filter, updateDoc, options);
+            const resultAns = await productCollection.findOne(filter);
+            res.send(resultAns);
+        });
+
+        app.put('/product/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id)
+            const updateQuantity = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+
+            const updateDoc = {
+                $set: {
+                    quantity: updateQuantity.quantity,
+                },
+            };
+            const result = await productCollection.updateOne(filter, updateDoc, options);
+            // const resultAns = await productCollection.findOne(filter);
             res.send(result);
         });
 
