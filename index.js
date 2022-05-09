@@ -21,6 +21,7 @@ async function run() {
     try {
         await client.connect();
         const productCollection = client.db('electronic').collection('product');
+        const myCollection = client.db('electronic').collection('myProduct');
 
         app.get('/product', async (req, res) => {
             const query = {};
@@ -37,7 +38,7 @@ async function run() {
             res.send(product);
         })
 
-        // update 
+        // Delivered
         app.put('/product/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id)
@@ -54,7 +55,7 @@ async function run() {
             const resultAns = await productCollection.findOne(filter);
             res.send(resultAns);
         });
-
+        // update 
         app.put('/product/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id)
@@ -89,6 +90,21 @@ async function run() {
             res.send(result);
         });
 
+        //My Product
+        app.get('/myProduct', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { email: email };
+            const cursor = myCollection.find(query);
+            const myProducts = await cursor.toArray();
+        })
+
+
+        app.post('/myProduct', async (req, res) => {
+            const myProduct = req.body;
+            const result = await myCollection.insertOne(myProduct);
+            res.send(result);
+        })
 
     }
     finally {
