@@ -120,7 +120,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('running')
+    res.send('running ok')
 })
 
 app.listen(port, () => {
